@@ -24,7 +24,7 @@ namespace CheckDataOnline
             controller.ErrorEvent += Controller_ErrorEvent;
             controller.SuccessEvent += Controller_SuccessEvent;
         }
-        public void AddLog(RichTextBox rtb, String message)
+        public void AddLog(RichTextBox rtb, String message,Color color)
         {
             rtb.Invoke(new MethodInvoker(() => {
                 rtb.AppendText(message + "\n");
@@ -32,17 +32,23 @@ namespace CheckDataOnline
         }
         private void Controller_SuccessEvent(object sender, EventArgs e)
         {
-            
+            AddLog(rtbDataSuccess, sender.ToString(),Color.Green);
         }
 
         private void Controller_ErrorEvent(object sender, EventArgs e)
         {
-            
+            AddLog(rtbLog, sender.ToString(), Color.Red);
         }
 
         private void Controller_ProcessEvent(object sender, EventArgs e)
         {
-           ;
+            AddLog(rtbLog, sender.ToString(), Color.Red);
+            if (sender.ToString().Contains("[PROXY DEQUEUE]"))
+                AddLog(rtbDataProxyRun, sender.ToString(), Color.Red);
+            if (sender.ToString().Contains("[RUN]"))
+                AddLog(rtbDataRun, sender.ToString(), Color.Red);
+            if (sender.ToString().Contains("[DATA DEQUEUE]"))
+                AddLog(rtbDataProxyRun, sender.ToString(), Color.Red);
         }
 
         private void bunifuButton1_Click(object sender, EventArgs e)
@@ -54,8 +60,7 @@ namespace CheckDataOnline
         {
             String proxy = rtbProxyImport.Text;
             String data = rtbDataImport.Text;
-            controller = new ControllerRequest(data.Split('\n'), proxy.Split('\n'));
-            controller.ProcessEvent+=
+            controller.SetupData(data.Split('\n'), proxy.Split('\n'));
             controller.Run();
             //String MSD = "DTC175524801030034";
             //String pass = "NguyenDuong";
@@ -81,7 +86,12 @@ namespace CheckDataOnline
             //http.AddHeader("refresh_token", "undefined");
             //http.AddHeader("agent", "{\"brower\":\"svo-web\",\"version\":\"3.6.0\"}");
             //http.AddHeader("hostname", "svonline.vn");
-            String strGetToken = http.Post("https://api.dhdt.vn/account/login/passwd", "{\"type\":\"user\",\"_id\":\""+_id+"\",\"passwd\":\""+pass+"\"}", "application/json;charset=utf-8").ToString();
+            //String strGetToken = http.Post("https://api.dhdt.vn/account/login/passwd", "{\"type\":\"user\",\"_id\":\""+_id+"\",\"passwd\":\""+pass+"\"}", "application/json;charset=utf-8").ToString();
+        }
+
+        private void bunifuButton3_Click(object sender, EventArgs e)
+        {
+            controller.Stop();
         }
     }
 }
