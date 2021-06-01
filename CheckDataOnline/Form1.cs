@@ -66,6 +66,7 @@ namespace CheckDataOnline
                 MessageBox.Show("Vui lòng nhập số");
                 return;
             }
+            controller.QuatityThread = qutityThread;
             controller.SetupData(data.Split('\n'), proxy.Split('\n'));
             controller.Run();
             //String MSD = "DTC175524801030034";

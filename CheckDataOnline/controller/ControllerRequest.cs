@@ -77,10 +77,13 @@ namespace CheckDataOnline.controller
                     }
                     Thread thrItem = new Thread(() =>
                     {
-                        
+                        if (Proxys.Count <= 0 || Datas.Count <= 0)
+                        {
+                            return;
+                        }
                         quatity++;
                         String data = Datas.Dequeue();
-                        while (data.Split('|').Length == 2)
+                        while (data.Split('|').Length < 2)
                         {
                             if (Proxys.Count <= 0 || Datas.Count <= 0)
                             {
