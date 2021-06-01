@@ -60,6 +60,12 @@ namespace CheckDataOnline
         {
             String proxy = rtbProxyImport.Text;
             String data = rtbDataImport.Text;
+            int qutityThread = 0;
+            if(!Int32.TryParse(txtQuatityThread.Text,out qutityThread))
+            {
+                MessageBox.Show("Vui lòng nhập số");
+                return;
+            }
             controller.SetupData(data.Split('\n'), proxy.Split('\n'));
             controller.Run();
             //String MSD = "DTC175524801030034";

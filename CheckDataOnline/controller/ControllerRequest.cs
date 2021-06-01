@@ -13,10 +13,12 @@ namespace CheckDataOnline.controller
         Queue<String> proxys;
         Queue<String> datas;
         Chilkat.Http httpGetToken;
+        private int quatityThread = 0;
         private Thread thr;
 
         public Queue<string> Proxys { get => proxys; set => proxys = value; }
         public Queue<string> Datas { get => datas; set => datas = value; }
+        public int QuatityThread { get => quatityThread; set => quatityThread = value; }
 
         public void SetupData(String[] data, String[] proxy)
         {
@@ -33,7 +35,8 @@ namespace CheckDataOnline.controller
             try
             {
                 thr.Abort();
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 errorEvent("[LOG]" + ex.Message, EventArgs.Empty);
             }
@@ -61,14 +64,21 @@ namespace CheckDataOnline.controller
             thr = new Thread(() =>
             {
                 bool fake = false;
+                int quatity = 0;
                 while (true)
                 {
                     if (Proxys.Count <= 0 || Datas.Count <= 0)
                     {
                         break;
                     }
+                    while (quatity > quatityThread)
+                    {
+                        Thread.Sleep(1000);
+                    }
                     Thread thrItem = new Thread(() =>
                     {
+                        
+                        quatity++;
                         String data = Datas.Dequeue();
                         while (data.Split('|').Length == 2)
                         {
@@ -83,16 +93,18 @@ namespace CheckDataOnline.controller
                         {
                             RunFakeProxyToHttp();
                         }
-                        processEvent("[RUN]"+ data, EventArgs.Empty);
+                        processEvent("[RUN]" + data, EventArgs.Empty);
                         String _id = GetID(data.Split('|')[0]);
                         if (String.IsNullOrEmpty(_id))
                         {
                             fake = true;
                             Datas.Enqueue(data);
+                            quatity--;
                             return;
                         }
                         if (_id == "Empty")
                         {
+                            quatity--;
                             return;
                         }
                         String token = GetToken(_id, data.Split('|')[1]);
@@ -100,9 +112,11 @@ namespace CheckDataOnline.controller
                         {
                             fake = true;
                             Datas.Enqueue(data);
+                            quatity--;
                             return;
                         }
                         successEvent(token, EventArgs.Empty);
+                        quatity--;
                     });
                     thrItem.IsBackground = true;
                     thrItem.Start();
@@ -144,13 +158,16 @@ namespace CheckDataOnline.controller
             if (Proxys.Count <= 0)
                 return;
             String strProxy = Proxys.Dequeue();
-            while (strProxy.Split('|').Length == 3)
+            while (strProxy.Split('|').Length < 3)
             {
+                if (Proxys.Count <= 0)
+                    return;
                 strProxy = Proxys.Dequeue();
                 processEvent("[PROXY DEQUEUE]", EventArgs.Empty);
             }
             String[] proxySplit = strProxy.Split('|');
             processEvent("[LOG]Đang connect tới proxy", EventArgs.Empty);
+
             while (!FakeProxy(proxySplit[0], proxySplit[1], proxySplit[2]))
             {
                 errorEvent("[LOG]Lỗi connect tới Proxy", EventArgs.Empty);
