@@ -13,7 +13,7 @@ namespace CheckDataOnline.controller
         Queue<String> proxys;
         Queue<String> datas;
         Chilkat.Http httpGetToken;
-        private int quatityThread = 0;
+        private int quatityThread ;
         private Thread thr;
 
         public Queue<string> Proxys { get => proxys; set => proxys = value; }
@@ -67,34 +67,50 @@ namespace CheckDataOnline.controller
                 int quatity = 0;
                 while (true)
                 {
+                    quatity++;
                     if (Proxys.Count <= 0 || Datas.Count <= 0)
                     {
+                        processEvent("[LOG]Đã hết dữ liệu", EventArgs.Empty);
                         break;
                     }
                     while (quatity > quatityThread)
                     {
                         Thread.Sleep(1000);
+                        processEvent("[LOG]Delay...", EventArgs.Empty);
                     }
                     Thread thrItem = new Thread(() =>
                     {
+                        
                         if (Proxys.Count <= 0 || Datas.Count <= 0)
                         {
+                            processEvent("[LOG]Đã hết dữ liệu", EventArgs.Empty);
+                            quatity--;
                             return;
                         }
-                        quatity++;
+                        
                         String data = Datas.Dequeue();
+                        if (String.IsNullOrEmpty(data))
+                        {
+                            errorEvent("[LOG]Empty Data", EventArgs.Empty);
+                            quatity--;
+                            return;
+                        }
+                        processEvent("[DATA DEQUEUE]" + data, EventArgs.Empty);
                         while (data.Split('|').Length < 2)
                         {
                             if (Proxys.Count <= 0 || Datas.Count <= 0)
                             {
+                                errorEvent("[LOG]Đã hết dữ liệu", EventArgs.Empty);
+                                quatity--;
                                 return;
                             }
                             data = Datas.Dequeue();
-                            processEvent("[DATA DEQUEUE]", EventArgs.Empty);
+                            processEvent("[DATA DEQUEUE]" + data, EventArgs.Empty);
                         }
                         if (fake)
                         {
                             RunFakeProxyToHttp();
+                            fake = false;
                         }
                         processEvent("[RUN]" + data, EventArgs.Empty);
                         String _id = GetID(data.Split('|')[0]);
@@ -118,7 +134,7 @@ namespace CheckDataOnline.controller
                             quatity--;
                             return;
                         }
-                        successEvent(token, EventArgs.Empty);
+                        successEvent(data + "=" + token, EventArgs.Empty);
                         quatity--;
                     });
                     thrItem.IsBackground = true;
@@ -164,10 +180,13 @@ namespace CheckDataOnline.controller
             while (strProxy.Split('|').Length < 3)
             {
                 if (Proxys.Count <= 0)
+                {
+                    errorEvent("[LOG]Đã hết dữ liệu Proxy", EventArgs.Empty);
                     return;
+                }
                 strProxy = Proxys.Dequeue();
-                processEvent("[PROXY DEQUEUE]", EventArgs.Empty);
             }
+            processEvent("[PROXY DEQUEUE]"+ strProxy, EventArgs.Empty);
             String[] proxySplit = strProxy.Split('|');
             processEvent("[LOG]Đang connect tới proxy", EventArgs.Empty);
 
@@ -176,10 +195,13 @@ namespace CheckDataOnline.controller
                 errorEvent("[LOG]Lỗi connect tới Proxy", EventArgs.Empty);
                 while (strProxy.Split('|').Length == 3)
                 {
+                    errorEvent("[LOG]Định dạng proxy lỗi", EventArgs.Empty);
+                    if (Proxys.Count <= 0)
+                        return;
                     strProxy = Proxys.Dequeue();
                 }
                 proxySplit = strProxy.Split('|');
-                processEvent("[PROXY DEQUEUE]", EventArgs.Empty);
+                processEvent("[PROXY DEQUEUE]" + strProxy, EventArgs.Empty);
                 processEvent("[LOG]Đang connect tới proxy", EventArgs.Empty);
             }
         }
@@ -209,7 +231,7 @@ namespace CheckDataOnline.controller
                     {
                         if (jsonCheckSmartName["list_acc"].ToArray().Length <= 0)
                         {
-                            errorEvent("[LOG]Không tìm thấy tên tài khoản", EventArgs.Empty);
+                            errorEvent("[LOG]Không tìm thấy tên tài khoản: "+MSV, EventArgs.Empty);
                             return "Empty";
                         }
                         else
@@ -220,20 +242,20 @@ namespace CheckDataOnline.controller
                     }
                     else
                     {
-                        errorEvent("[LOG]Lỗi request get Check Smart Name", EventArgs.Empty);
+                        errorEvent("[LOG]Lỗi request get Check Smart Name: "+MSV, EventArgs.Empty);
                         return null;
                     }
 
                 }
                 catch (Exception ex)
                 {
-                    errorEvent("[LOG]Lỗi request get Check Smart Name", EventArgs.Empty);
+                    errorEvent("[LOG]Lỗi request get Check Smart Name: " + MSV, EventArgs.Empty);
                     return null;
                 }
             }
             catch (Exception ex)
             {
-                errorEvent("[LOG]Lỗi request get Check Smart Name", EventArgs.Empty);
+                errorEvent("[LOG]Lỗi request get Check Smart Name: " + MSV, EventArgs.Empty);
                 return null;
             }
 

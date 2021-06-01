@@ -50,6 +50,13 @@ namespace CheckDataOnline
             this.rtbLog = new System.Windows.Forms.RichTextBox();
             this.rtbDataProxyRun = new System.Windows.Forms.RichTextBox();
             this.rtbDataSuccess = new System.Windows.Forms.RichTextBox();
+            this.bunifuDragControl1 = new Bunifu.Framework.UI.BunifuDragControl(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -353,62 +360,135 @@ namespace CheckDataOnline
             // rtbDataImport
             // 
             this.rtbDataImport.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtbDataImport.Location = new System.Drawing.Point(28, 93);
+            this.rtbDataImport.Location = new System.Drawing.Point(28, 109);
             this.rtbDataImport.Name = "rtbDataImport";
-            this.rtbDataImport.Size = new System.Drawing.Size(200, 324);
+            this.rtbDataImport.Size = new System.Drawing.Size(200, 308);
             this.rtbDataImport.TabIndex = 5;
             this.rtbDataImport.Text = "";
+            this.rtbDataImport.WordWrap = false;
             // 
             // rtbProxyImport
             // 
             this.rtbProxyImport.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtbProxyImport.Location = new System.Drawing.Point(234, 93);
+            this.rtbProxyImport.Location = new System.Drawing.Point(234, 109);
             this.rtbProxyImport.Name = "rtbProxyImport";
-            this.rtbProxyImport.Size = new System.Drawing.Size(200, 324);
+            this.rtbProxyImport.Size = new System.Drawing.Size(200, 308);
             this.rtbProxyImport.TabIndex = 6;
             this.rtbProxyImport.Text = "";
+            this.rtbProxyImport.WordWrap = false;
             // 
             // rtbDataRun
             // 
             this.rtbDataRun.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtbDataRun.Location = new System.Drawing.Point(440, 52);
+            this.rtbDataRun.Location = new System.Drawing.Point(440, 68);
             this.rtbDataRun.Name = "rtbDataRun";
-            this.rtbDataRun.Size = new System.Drawing.Size(455, 365);
+            this.rtbDataRun.Size = new System.Drawing.Size(455, 349);
             this.rtbDataRun.TabIndex = 7;
             this.rtbDataRun.Text = "";
+            this.rtbDataRun.WordWrap = false;
             // 
             // rtbLog
             // 
             this.rtbLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtbLog.Location = new System.Drawing.Point(901, 52);
+            this.rtbLog.Location = new System.Drawing.Point(901, 68);
             this.rtbLog.Name = "rtbLog";
-            this.rtbLog.Size = new System.Drawing.Size(448, 365);
+            this.rtbLog.Size = new System.Drawing.Size(448, 349);
             this.rtbLog.TabIndex = 8;
             this.rtbLog.Text = "";
+            this.rtbLog.WordWrap = false;
             // 
             // rtbDataProxyRun
             // 
             this.rtbDataProxyRun.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtbDataProxyRun.Location = new System.Drawing.Point(901, 423);
+            this.rtbDataProxyRun.Location = new System.Drawing.Point(901, 444);
             this.rtbDataProxyRun.Name = "rtbDataProxyRun";
-            this.rtbDataProxyRun.Size = new System.Drawing.Size(450, 234);
+            this.rtbDataProxyRun.Size = new System.Drawing.Size(450, 213);
             this.rtbDataProxyRun.TabIndex = 9;
             this.rtbDataProxyRun.Text = "";
+            this.rtbDataProxyRun.WordWrap = false;
             // 
             // rtbDataSuccess
             // 
             this.rtbDataSuccess.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtbDataSuccess.Location = new System.Drawing.Point(28, 423);
+            this.rtbDataSuccess.Location = new System.Drawing.Point(28, 444);
             this.rtbDataSuccess.Name = "rtbDataSuccess";
-            this.rtbDataSuccess.Size = new System.Drawing.Size(867, 234);
+            this.rtbDataSuccess.Size = new System.Drawing.Size(867, 213);
             this.rtbDataSuccess.TabIndex = 10;
             this.rtbDataSuccess.Text = "";
+            this.rtbDataSuccess.WordWrap = false;
+            // 
+            // bunifuDragControl1
+            // 
+            this.bunifuDragControl1.Fixed = true;
+            this.bunifuDragControl1.Horizontal = true;
+            this.bunifuDragControl1.TargetControl = this.panel1;
+            this.bunifuDragControl1.Vertical = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(25, 93);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(33, 13);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "Data:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(231, 93);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(36, 13);
+            this.label2.TabIndex = 12;
+            this.label2.Text = "Proxy:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(440, 52);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(87, 13);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "Data đang chạy:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(898, 52);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(28, 13);
+            this.label4.TabIndex = 14;
+            this.label4.Text = "Log:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(25, 428);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(75, 13);
+            this.label5.TabIndex = 15;
+            this.label5.Text = "Data success:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(898, 428);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(107, 13);
+            this.label6.TabIndex = 16;
+            this.label6.Text = "Proxy/Data Đã chạy:";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1375, 669);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.rtbDataSuccess);
             this.Controls.Add(this.rtbDataProxyRun);
             this.Controls.Add(this.rtbLog);
@@ -424,6 +504,7 @@ namespace CheckDataOnline
             this.Text = "Form1";
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -441,6 +522,13 @@ namespace CheckDataOnline
         private System.Windows.Forms.RichTextBox rtbDataImport;
         private Bunifu.UI.WinForms.BunifuButton.BunifuButton bunifuButton3;
         private Bunifu.UI.WinForms.BunifuTextbox.BunifuTextBox txtQuatityThread;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private Bunifu.Framework.UI.BunifuDragControl bunifuDragControl1;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
     }
 }
 
